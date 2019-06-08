@@ -30,6 +30,7 @@ class Transfer
     @amount = 50
   end
   
+# Checking if both accounts are valid  
   def valid?
     if @sender.valid? && @receiver.valid?
       true 
@@ -37,24 +38,33 @@ class Transfer
       false 
     end
   end
+  
+
 
 # minus the amount sent from the sender's account
+# rejects tranfser if the sender doesn't have a valid account
   def execute_transaction
     # binding.pry
-    if self.status == "pending" 
-      sender.balance -= amount         # Do NOT use @amount, use amount
-      receiver.balance += amount    # Do NOT use @amount, use amount
+    if
+      self.status == "pending" 
+      sender.balance -= @amount 
+      receiver.balance += @amount
       self.status = "complete"
-    else
-      @status = "rejected"
+    # else !sender.valid?
+    #   self.status == "rejected"
+    #   puts "Transaction rejected. Please check your account balance."
+    end
+    
+    if sender.valid? == true
+      # self.status == "rejected"
       puts "Transaction rejected. Please check your account balance."
     end
   end
   
   def reverse_transfer
     if self.status == "complete"
-      sender.balance += amount
-      receiver.balance -= amount
+      sender.balance += @amount
+      receiver.balance -= @amount
       self.status = "reversed"
     end
   end
