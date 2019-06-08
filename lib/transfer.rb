@@ -18,6 +18,8 @@
     it can only reverse executed transfers (FAILED - 20)
 =end
 
+require 'pry'
+
 class Transfer
   attr_accessor :sender, :receiver, :status, :amount
   
@@ -29,13 +31,32 @@ class Transfer
   end
   
   def valid?
-    
+    if @sender.valid? && @receiver.valid?
+      true 
+    else
+      false 
+    end
   end
 
+# minus the amount sent from the sender's account
   def execute_transaction
+    # binding.pry
+    if self.status == "pending" 
+      sender.balance -= amount         # Do NOT use @amount, use amount
+      receiver.balance += amount    # Do NOT use @amount, use amount
+      self.status = "complete"
+    else
+      @status = "rejected"
+      puts "Transaction rejected. Please check your account balance."
+    end
   end
   
-  def reverse_transfer(account)
+  def reverse_transfer
+    if self.status == "complete"
+      sender.balance += amount
+      receiver.balance -= amount
+      self.status = "reversed"
+    end
   end
 
 end
