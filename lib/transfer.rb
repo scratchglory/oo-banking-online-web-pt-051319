@@ -21,18 +21,19 @@
 require 'pry'
 
 class Transfer
-  attr_accessor :sender, :receiver, :status, :amount
+  attr_accessor :sender, :status
+  attr_reader :receiver, :amount
   
-  def initialize(sender, receiver, status)
+  def initialize(sender, receiver, amount)
     @sender = sender
     @receiver = receiver
     @status = "pending"
-    @amount = 50
+    @amount = amount
   end
   
 # Checking if both accounts are valid  
   def valid?
-    if @sender.valid? && @receiver.valid?
+    if sender.valid? && receiver.valid?
       true 
     else
       false 
@@ -40,31 +41,27 @@ class Transfer
   end
   
 
-
 # minus the amount sent from the sender's account
 # rejects tranfser if the sender doesn't have a valid account
-  def execute_transaction
+def execute_transaction
     # binding.pry
-    if
-      self.status == "pending" 
-      sender.balance -= @amount 
-      receiver.balance += @amount
-      self.status = "complete"
-    # else !sender.valid?
-    #   self.status == "rejected"
-    #   puts "Transaction rejected. Please check your account balance."
-    end
-    
-    if sender.valid? == true
-      # self.status == "rejected"
-      puts "Transaction rejected. Please check your account balance."
+    if sender.balance > amount && status == "pending"
+      sender.balance -= amount
+      receiver.balance += amount
+      status = "complete"
+    else
+      status = "rejected"
+      return "Transaction rejected. Please check your account balance."
+
     end
   end
+
+
   
   def reverse_transfer
     if self.status == "complete"
-      sender.balance += @amount
-      receiver.balance -= @amount
+      sender.balance += amount
+      receiver.balance -= amount
       self.status = "reversed"
     end
   end
