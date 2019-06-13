@@ -50,7 +50,7 @@ def execute_transaction
       receiver.balance += amount
       status = "complete"
     else
-      status = "rejected"
+      self.status = "rejected"
       return "Transaction rejected. Please check your account balance."
 
     end
