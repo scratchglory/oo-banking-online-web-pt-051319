@@ -45,10 +45,10 @@ class Transfer
 # rejects tranfser if the sender doesn't have a valid account
 def execute_transaction
     # binding.pry
-    if sender.balance > amount && self.status == "pending"
-      sender.balance -= amount
-      receiver.balance += amount
-      status = "complete"
+    if valid? && receiver.balance > amount && self.status == "complete"
+      receiver.balance -= amount
+      sender.balance += amount
+      self.status = "reversed"
     else
        self.status = "rejected"
     "Transaction rejected. Please check your account balance."
