@@ -44,7 +44,7 @@ class Transfer
 # minus the amount sent from the sender's account
 # rejects tranfser if the sender doesn't have a valid account
 def execute_transaction
-    binding.pry
+    # binding.pry
     if sender.balance > amount && self.status == "pending"
       sender.balance -= amount
       receiver.balance += amount
